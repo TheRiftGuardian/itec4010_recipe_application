@@ -3,6 +3,17 @@ from flask import Flask, abort, render_template, redirect, url_for, flash
 from flask_bootstrap import Bootstrap5
 from flask_ckeditor import CKEditor
 from flask_gravatar import Gravatar
+<<<<<<< HEAD
+from flask_login import login_user, LoginManager, current_user, logout_user
+from flask_sqlalchemy import SQLAlchemy
+from functools import wraps
+from werkzeug.security import generate_password_hash, check_password_hash
+
+# Imported forms from the forms.py
+from forms import CreateRecipeForm, RegisterForm, LoginForm, CommentForm
+# Imported models from the models.py
+from models import Base, RecipePost, User, Comment
+=======
 from flask_login import UserMixin, login_user, LoginManager, current_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship, DeclarativeBase, Mapped, mapped_column
@@ -12,6 +23,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.orm import relationship
 # Import your forms from the forms.py
 from forms import CreateRecipeForm, RegisterForm, LoginForm, CommentForm
+>>>>>>> 9a9ad42080cf421bf6c1d262a8f9a9505de2173c
 
 '''
 Make sure the required packages are installed: 
@@ -51,14 +63,20 @@ gravatar = Gravatar(app,
                     use_ssl=False,
                     base_url=None)
 
+<<<<<<< HEAD
+
+=======
 # CREATE DATABASE
 class Base(DeclarativeBase):
     pass
+>>>>>>> 9a9ad42080cf421bf6c1d262a8f9a9505de2173c
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///recipes.db'
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 
 
+<<<<<<< HEAD
+=======
 # CONFIGURE TABLES
 class RecipePost(db.Model):
     __tablename__ = "recipe_posts"
@@ -105,6 +123,7 @@ class Comment(db.Model):
     parent_post = relationship("RecipePost", back_populates="comments")
 
 
+>>>>>>> 9a9ad42080cf421bf6c1d262a8f9a9505de2173c
 with app.app_context():
     db.create_all()
 

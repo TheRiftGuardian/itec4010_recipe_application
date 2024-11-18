@@ -25,7 +25,11 @@ class RegisterForm(FlaskForm):
 class LoginForm(FlaskForm):
     email = StringField("Email", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
+<<<<<<< HEAD
+    submit = SubmitField("Log In!")
+=======
     submit = SubmitField("Let Me In!")
+>>>>>>> 9a9ad42080cf421bf6c1d262a8f9a9505de2173c
 
 
 # Create a form to add comments
