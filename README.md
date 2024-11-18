@@ -58,12 +58,12 @@ This is great when a change to the header is being made and you don't have to do
 
 Forms can be render with the function `render_form` in an html file. They must take a FlaskForm object.  <br>
 Creating new forms is simple: <br>
-`class CreateRecipeForm(FlaskForm): <br>
-    title = StringField("Recipe Post Title", validators=[DataRequired()]) <br>
-    subtitle = StringField("Subtitle", validators=[DataRequired()]) <br>
-    img_url = StringField("Recipe Image URL", validators=[DataRequired(), URL()]) <br>
-    body = CKEditorField("Recipe Content", validators=[DataRequired()]) <br>
-    submit = SubmitField("Submit Post")` <br>
+`class CreateRecipeForm(FlaskForm):` <br>
+    `    title = StringField("Recipe Post Title", validators=[DataRequired()])` <br>
+    `    subtitle = StringField("Subtitle", validators=[DataRequired()])` <br>
+    `    img_url = StringField("Recipe Image URL", validators=[DataRequired(), URL()])` <br>
+    `    body = CKEditorField("Recipe Content", validators=[DataRequired()])` <br>
+    `    submit = SubmitField("Submit Post")` <br>
 ^^^ <br>
 This is an example.  <br>
 There are multiple Fields and validators to choose from depending on application. Check WTFForms documentation for anything special. <br>
