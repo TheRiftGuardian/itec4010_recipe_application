@@ -66,27 +66,16 @@
                 >Home</a
               >
             </li>
-<<<<<<< HEAD
             <li class="nav-item">
               <a
                 class="nav-link px-lg-3 py-3 py-lg-4"
                 href="{{ url_for('about') }}"
                 >About</a
-=======
-            <!-- Only show Login/Register if user is logged out. Otherwise show "Log Out" -->
-            {% if not current_user.is_authenticated: %}
-            <li class="nav-item">
-              <a
-                class="nav-link px-lg-3 py-3 py-lg-4"
-                href="{{ url_for('login') }}"
-                >Login</a
->>>>>>> 9a9ad42080cf421bf6c1d262a8f9a9505de2173c
               >
             </li>
             <li class="nav-item">
               <a
                 class="nav-link px-lg-3 py-3 py-lg-4"
-<<<<<<< HEAD
                 href="{{ url_for('contact') }}"
                 >Contact</a
               >
@@ -116,35 +105,6 @@
               >
             </li>
             {% endif %}
-=======
-                href="{{ url_for('register') }}"
-                >Register</a
-              >
-            </li>
-            {% else: %}
-            <li class="nav-item">
-              <a
-                class="nav-link px-lg-3 py-3 py-lg-4"
-                href="{{ url_for('logout') }}"
-                >Log Out</a
-              >
-            </li>
-            {% endif %}
-            <li class="nav-item">
-              <a
-                class="nav-link px-lg-3 py-3 py-lg-4"
-                href="{{ url_for('about') }}"
-                >About</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link px-lg-3 py-3 py-lg-4"
-                href="{{ url_for('contact') }}"
-                >Contact</a
-              >
-            </li>
->>>>>>> 9a9ad42080cf421bf6c1d262a8f9a9505de2173c
           </ul>
         </div>
       </div>

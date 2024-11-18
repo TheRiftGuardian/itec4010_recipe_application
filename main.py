@@ -3,7 +3,6 @@ from flask import Flask, abort, render_template, redirect, url_for, flash
 from flask_bootstrap import Bootstrap5
 from flask_ckeditor import CKEditor
 from flask_gravatar import Gravatar
-<<<<<<< HEAD
 from flask_login import login_user, LoginManager, current_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
@@ -13,17 +12,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from forms import CreateRecipeForm, RegisterForm, LoginForm, CommentForm
 # Imported models from the models.py
 from models import Base, RecipePost, User, Comment
-=======
-from flask_login import UserMixin, login_user, LoginManager, current_user, logout_user
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import relationship, DeclarativeBase, Mapped, mapped_column
-from sqlalchemy import Integer, String, Text
-from functools import wraps
-from werkzeug.security import generate_password_hash, check_password_hash
-from sqlalchemy.orm import relationship
-# Import your forms from the forms.py
-from forms import CreateRecipeForm, RegisterForm, LoginForm, CommentForm
->>>>>>> 9a9ad42080cf421bf6c1d262a8f9a9505de2173c
 
 '''
 Make sure the required packages are installed: 
@@ -63,67 +51,12 @@ gravatar = Gravatar(app,
                     use_ssl=False,
                     base_url=None)
 
-<<<<<<< HEAD
 
-=======
-# CREATE DATABASE
-class Base(DeclarativeBase):
-    pass
->>>>>>> 9a9ad42080cf421bf6c1d262a8f9a9505de2173c
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///recipes.db'
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 
 
-<<<<<<< HEAD
-=======
-# CONFIGURE TABLES
-class RecipePost(db.Model):
-    __tablename__ = "recipe_posts"
-    # Recipe Post ID
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    # Create Foreign Key, "users.id" the users refers to the tablename of User.
-    author_id: Mapped[int] = mapped_column(Integer, db.ForeignKey("users.id"))
-    # Create reference to the User object. The "posts" refers to the posts property in the User class.
-    author = relationship("User", back_populates="recipes")
-    title: Mapped[str] = mapped_column(String(250), unique=True, nullable=False)
-    subtitle: Mapped[str] = mapped_column(String(250), nullable=False)
-    date: Mapped[str] = mapped_column(String(250), nullable=False)
-    body: Mapped[str] = mapped_column(Text, nullable=False)
-    img_url: Mapped[str] = mapped_column(String(250), nullable=False)
-    # Parent relationship to the comments
-    comments = relationship("Comment", back_populates="parent_post")
-
-
-# Create a User table for all your registered users
-class User(UserMixin, db.Model):
-    __tablename__ = "users"
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    email: Mapped[str] = mapped_column(String(100), unique=True)
-    password: Mapped[str] = mapped_column(String(100))
-    name: Mapped[str] = mapped_column(String(100))
-    # This will act like a list of RecipePost objects attached to each User.
-    # The "author" refers to the author property in the RecipePost class.
-    recipes = relationship("RecipePost", back_populates="author")
-    # Parent relationship: "comment_author" refers to the comment_author property in the Comment class.
-    comments = relationship("Comment", back_populates="comment_author")
-
-
-# Create a table for the comments on the recipe posts
-class Comment(db.Model):
-    __tablename__ = "comments"
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    text: Mapped[str] = mapped_column(Text, nullable=False)
-    # Child relationship:"users.id" The users refers to the tablename of the User class.
-    # "comments" refers to the comments property in the User class.
-    author_id: Mapped[int] = mapped_column(Integer, db.ForeignKey("users.id"))
-    comment_author = relationship("User", back_populates="comments")
-    # Child Relationship to the RecipePosts
-    post_id: Mapped[str] = mapped_column(Integer, db.ForeignKey("recipe_posts.id"))
-    parent_post = relationship("RecipePost", back_populates="comments")
-
-
->>>>>>> 9a9ad42080cf421bf6c1d262a8f9a9505de2173c
 with app.app_context():
     db.create_all()
 
