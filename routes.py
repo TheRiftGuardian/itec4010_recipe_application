@@ -110,6 +110,7 @@ def get_all_posts():
     posts = result.scalars().all()
 
     for post in posts:
+        print(post.average_rating)
         post.avg_rating = post.average_rating
 
     return render_template("index.html", all_posts=posts, current_user=current_user)

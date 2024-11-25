@@ -15,6 +15,28 @@
             <a href="#">{{ post.author.name }}</a>
             on {{ post.date }}
           </span>
+          <br>
+            <span>
+            {% set avg_rating, total_reviews = post.average_rating if post.average_rating else (None, 0) %}
+            {% if avg_rating %}
+              <span>
+                {% for i in range(5) %}
+                  {% if avg_rating >= i + 1 %}
+                    <i class="fas fa-star"></i> <!-- Full star -->
+                  {% elif avg_rating >= i + 0.5 %}
+                    <i class="fas fa-star-half-alt"></i> <!-- Half star -->
+                  {% else %}
+                    <i class="far fa-star"></i> <!-- Empty star -->
+                  {% endif %}
+                {% endfor %}
+              </span>
+              <span style="font-weight: normal; margin-left: 8px;">
+                ({{ total_reviews }} reviews)
+              </span>
+            {% else %}
+              <span>No reviews yet</span>
+            {% endif %}
+          </span>
         </div>
       </div>
     </div>

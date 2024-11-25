@@ -31,22 +31,24 @@ class RecipePost(Base):
     def average_rating(self):
         # Calculate the average rating for the current recipe post
         if not self.comments:  # If there are no comments, return None or 0
-            return None
+            return None, 0
 
         total_rating = 0
         count = 0
 
         # Loop through each comment and accumulate the ratings
         for comment in self.comments:
-            if comment.star_rating:  # Make sure the comment has a star rating
+            if comment.star_rating is not None:  # Make sure the comment has a star rating
                 total_rating += comment.star_rating
                 count += 1
 
         if count == 0:  # Avoid division by zero
             return None
 
-        # Calculate and return the average rating
-        return round(total_rating / count, 1)
+        # Calculate and return the average rating and number of reviews in tuple
+        average_rating = round(total_rating/ count, 1)
+
+        return (average_rating, count)
 
 # Create a User table for all your registered users
 class User(UserMixin, Base):
