@@ -47,6 +47,7 @@
         {{ ckeditor.load() }}
         <!-- Configure it with the name of the form field from CommentForm -->
         {{ ckeditor.config(name='comment_text') }}
+
         <!-- Create the wtf quick form from CommentForm -->
         {{ render_form(form, novalidate=True, button_map={"submit": "primary"}) }}
         <div class="comment">
@@ -59,9 +60,14 @@
                   src="{{ comment.comment_author.email | gravatar }}"
                 />
               </div>
+              <span class="sub-text">{{comment.comment_author.name}}</span>
+              <br>
               <div class="commentText">
+                {{ '⭐' * comment.star_rating | int }} {{comment.date}}
+                {% if comment.text %}
+                <br>
                 {{comment.text|safe}}
-                <span class="sub-text">{{comment.comment_author.name}}</span>
+                {% endif %}
               </div>
             </li>
             {% endfor %}

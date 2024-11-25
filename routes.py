@@ -108,6 +108,10 @@ def logout():
 def get_all_posts():
     result = db.session.execute(db.select(RecipePost))
     posts = result.scalars().all()
+
+    for post in posts:
+        post.avg_rating = post.average_rating
+
     return render_template("index.html", all_posts=posts, current_user=current_user)
 
 
@@ -125,11 +129,18 @@ def show_post(post_id):
 
         new_comment = Comment(
             text=comment_form.comment_text.data,
+            star_rating = comment_form.star_rating.data,
             comment_author=current_user,
-            parent_post=requested_post
+            parent_post=requested_post,
+            date=date.today().strftime("%B %d, %Y")
         )
         db.session.add(new_comment)
         db.session.commit()
+
+        # Clear Comment Fields
+        comment_form.comment_text.data = ""
+        comment_form.star_rating.data = None
+
     return render_template("post.html", post=requested_post, current_user=current_user, form=comment_form)
 
 

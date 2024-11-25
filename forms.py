@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField
-from wtforms.validators import DataRequired, URL
+from wtforms import StringField, SubmitField, PasswordField, IntegerField, SelectField
+from wtforms.validators import DataRequired, URL, NumberRange, Optional
 from flask_ckeditor import CKEditorField
 
 
@@ -34,5 +34,12 @@ class LoginForm(FlaskForm):
 
 # Create a form to add comments
 class CommentForm(FlaskForm):
-    comment_text = CKEditorField("Comment", validators=[DataRequired()])
+    star_rating = IntegerField("Star Rating (1-5)", validators=[DataRequired(), NumberRange(min=1, max=5)])
+    star_rating = SelectField("Star Rating (1-5)", choices=
+                              [('1', '★☆☆☆☆'),  # 1 star
+        ('2', ' ★★☆☆☆'),  # 2 stars
+        ('3', '★★★☆☆'),  # 3 stars
+        ('4', '★★★★☆'),  # 4 stars
+        ('5', '★★★★★')], coerce=int)
+    comment_text = CKEditorField("Your Feedback (Optional)", validators=[Optional()])
     submit = SubmitField("Submit Comment")

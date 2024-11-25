@@ -27,6 +27,26 @@ class RecipePost(Base):
     # Parent relationship to the comments
     comments = relationship("Comment", back_populates="parent_post")
 
+    @property
+    def average_rating(self):
+        # Calculate the average rating for the current recipe post
+        if not self.comments:  # If there are no comments, return None or 0
+            return None
+
+        total_rating = 0
+        count = 0
+
+        # Loop through each comment and accumulate the ratings
+        for comment in self.comments:
+            if comment.star_rating:  # Make sure the comment has a star rating
+                total_rating += comment.star_rating
+                count += 1
+
+        if count == 0:  # Avoid division by zero
+            return None
+
+        # Calculate and return the average rating
+        return round(total_rating / count, 1)
 
 # Create a User table for all your registered users
 class User(UserMixin, Base):
@@ -47,6 +67,9 @@ class Comment(Base):
     __tablename__ = "comments"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     text: Mapped[str] = mapped_column(Text, nullable=False)
+    star_rating: Mapped[int] = mapped_column(Integer, nullable=False)
+    date: Mapped[str] = mapped_column(String(250), nullable=False)
+
     # Child relationship:"users.id" The users refers to the tablename of the User class.
     # "comments" refers to the comments property in the User class.
     author_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
