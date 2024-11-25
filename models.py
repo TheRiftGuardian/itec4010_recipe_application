@@ -25,7 +25,9 @@ class RecipePost(Base):
 
     img_url: Mapped[str] = mapped_column(String(250), nullable=False)
     # Parent relationship to the comments
-    comments = relationship("Comment", back_populates="parent_post")
+    comments = relationship("Comment", back_populates="parent_post",
+                            cascade="all, delete-orphan",
+                            )
 
     @property
     def average_rating(self):
