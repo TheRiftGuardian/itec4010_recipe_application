@@ -1,10 +1,13 @@
+from datetime import date
 from flask import Flask, abort, render_template, redirect, url_for, flash
 from flask_bootstrap import Bootstrap5
 from flask_ckeditor import CKEditor
 from flask_gravatar import Gravatar
 from flask_login import login_user, LoginManager, current_user, logout_user
-from datetime import date
+from flask_sqlalchemy import SQLAlchemy
+from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
+
 # Imported forms from the forms.py
 from forms import CreateRecipeForm, RegisterForm, LoginForm, CommentForm
 # Imported models from the models.py
@@ -16,7 +19,6 @@ from db import db
 # Imported route_controller from routes.py
 from routes import route_controller
 
-from generate_data import generate_example_data
 '''
 Make sure the required packages are installed: 
 Open the Terminal in PyCharm (bottom left). 
@@ -64,9 +66,6 @@ db.init_app(app)
 
 with app.app_context():
     db.create_all()
-
-    # Generate Example Data if db empty.
-    generate_example_data(db=db)
 
 
 if __name__ == "__main__":

@@ -69,7 +69,7 @@ def register():
         db.session.add(new_user)
         db.session.commit()
         # This line will authenticate the user with Flask-Login
-        # Immediately logging them in after registration
+        # Immeditately logging them in after registration
         login_user(new_user)
         return redirect(url_for("route_controller.get_all_posts"))
     return render_template("register.html", form=form, current_user=current_user)
@@ -142,11 +142,7 @@ def add_new_post():
         new_post = RecipePost(
             title=form.title.data,
             subtitle=form.subtitle.data,
-
-            # body=form.body.data,
-            ingredients = form.ingredients.data,
-            instructions = form.instructions.data,
-
+            body=form.body.data,
             img_url=form.img_url.data,
             author=current_user,
             date=date.today().strftime("%B %d, %Y")
@@ -166,21 +162,14 @@ def edit_post(post_id):
         subtitle=post.subtitle,
         img_url=post.img_url,
         author=post.author,
-
-        # body=post.body,
-        ingredients = post.ingredients,
-        instructions = post.instructions
+        body=post.body
     )
     if edit_form.validate_on_submit():
         post.title = edit_form.title.data
         post.subtitle = edit_form.subtitle.data
         post.img_url = edit_form.img_url.data
         post.author = current_user
-
-        #post.body = edit_form.body.data
-        post.ingredients = edit_form.ingredients.data
-        post.instructions = edit_form.instructions.data
-
+        post.body = edit_form.body.data
         db.session.commit()
         return redirect(url_for("route_controller.show_post", post_id=post.id))
     return render_template("make-post.html", form=edit_form, is_edit=True, current_user=current_user)

@@ -9,11 +9,7 @@ class CreateRecipeForm(FlaskForm):
     title = StringField("Recipe Post Title", validators=[DataRequired()])
     subtitle = StringField("Subtitle", validators=[DataRequired()])
     img_url = StringField("Recipe Image URL", validators=[DataRequired(), URL()])
-
-    #body = CKEditorField("Recipe Content", validators=[DataRequired()])
-    ingredients = CKEditorField("Recipe Ingredients", validators=[DataRequired()])
-    instructions = CKEditorField("Recipe Instructions", validators=[DataRequired()])
-
+    body = CKEditorField("Recipe Content", validators=[DataRequired()])
     submit = SubmitField("Submit Post")
 
 
