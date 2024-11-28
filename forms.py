@@ -75,3 +75,26 @@ class CommentForm(FlaskForm):
         ('5', '★★★★★')], coerce=int)
     comment_text = CKEditorField("Your Feedback (Optional)", validators=[Optional()])
     submit = SubmitField("Submit Comment")
+
+class RecipeFilterForm(FlaskForm):
+    dietary_choice = SelectField(
+        'Dietary Choice',
+        choices=[('', 'Any Dietary Choice')] + [(choice.value, choice.name.title().replace('_', ' ')) for choice in DietaryChoice],
+        coerce=str
+    )
+    time_spent = SelectField(
+        'Time Spent',
+        choices=[('', 'Any Time Spent')] + [(choice.value, choice.name.title().replace('_', ' ')) for choice in TimeSpent],
+        coerce=str
+    )
+    meal_cost = SelectField(
+        'Meal Cost',
+        choices=[('', 'Any Meal Cost')] + [(choice.value, choice.name.title().replace('_', ' ')) for choice in MealCost],
+        coerce=str
+    )
+    meal_time = SelectField(
+        'Meal Time',
+        choices=[('', 'Any Meal Time')] + [(choice.value, choice.name.title()) for choice in MealTime],
+        coerce=str
+    )
+    submit = SubmitField('Filter')

@@ -6,10 +6,11 @@ from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 
+from sqlalchemy import select, and_
 # Imported forms from the forms.py
-from forms import CreateRecipeForm, RegisterForm, LoginForm, CommentForm
+from forms import CreateRecipeForm, RegisterForm, LoginForm, CommentForm, RecipeFilterForm
 # Imported models from the models.py
-from models import RecipePost, User, Comment
+from models import RecipePost, User, Comment, DietaryChoice, TimeSpent, MealTime, MealCost
 from db import db
 
 
@@ -104,18 +105,68 @@ def logout():
     return redirect(url_for('route_controller.get_all_posts'))
 
 
-@route_controller.route('/')
-def get_all_posts():
-    result = db.session.execute(db.select(RecipePost))
-    posts = result.scalars().all()
-    print(posts)
+def filter_recipes_using_execute(db, dietary_choice=None, time_spent=None, meal_cost=None, meal_time=None):
+    # Start with the base select query
+    query = select(RecipePost)
 
+    # Collect filter conditions
+    filters = []
+
+    if dietary_choice:
+        filters.append(RecipePost.dietary_choice == dietary_choice)
+
+    if time_spent:
+        filters.append(RecipePost.time_spent == time_spent)
+
+    if meal_cost:
+        filters.append(RecipePost.meal_cost == meal_cost)
+
+    if meal_time:
+        filters.append(RecipePost.meal_time == meal_time)
+
+    # Apply all filters if any
+    if filters:
+        query = query.where(and_(*filters))
+
+    # Execute the query
+    result = db.session.execute(query).scalars().all()
+
+    return result
+
+
+
+
+@route_controller.route('/', methods=['GET', 'POST'])
+def get_all_posts():
+    form = RecipeFilterForm()
+
+    # Default filter if no form submitted
+    dietary_choice = None
+    time_spent = None
+    meal_cost = None
+    meal_time = None
+
+    if form.validate_on_submit():
+        # Get filter values from the form and convert strings to enum values
+        dietary_choice = DietaryChoice(form.dietary_choice.data) if form.dietary_choice.data != '' else None
+        time_spent = TimeSpent(form.time_spent.data) if form.time_spent.data != '' else None
+        meal_cost = MealCost(form.meal_cost.data) if form.meal_cost.data != '' else None
+        meal_time = MealTime(form.meal_time.data) if form.meal_time.data != '' else None
+
+    # Use the filter_recipes_using_execute function to filter posts based on form selections
+    posts = filter_recipes_using_execute(
+        db,
+        dietary_choice=dietary_choice,
+        time_spent=time_spent,
+        meal_cost=meal_cost,
+        meal_time=meal_time
+    )
+
+    # If needed, calculate average ratings for the posts
     for post in posts:
-        print(post)
-        print(vars(post))
         post.avg_rating = post.average_rating
 
-    return render_template("index.html", all_posts=posts, current_user=current_user)
+    return render_template("index.html", all_posts=posts, current_user=current_user, form=form)
 
 
 # Add a POST method to be able to post comments
@@ -224,3 +275,4 @@ def about():
 @route_controller.route("/contact")
 def contact():
     return render_template("contact.html", current_user=current_user)
+

@@ -66,7 +66,7 @@ with app.app_context():
     db.create_all()
 
     # Generate Example Data if db empty.
-  #  generate_example_data(db=db)
+    generate_example_data(db=db)
 
 
 if __name__ == "__main__":
