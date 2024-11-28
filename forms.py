@@ -5,6 +5,9 @@ from flask_ckeditor import CKEditorField
 
 
 # WTForm for creating a recipe post
+from Recipe_Enum import DietaryChoice, TimeSpent, MealTime, MealCost
+
+
 class CreateRecipeForm(FlaskForm):
     title = StringField("Recipe Post Title", validators=[DataRequired()])
     subtitle = StringField("Subtitle", validators=[DataRequired()])
@@ -13,6 +16,35 @@ class CreateRecipeForm(FlaskForm):
     #body = CKEditorField("Recipe Content", validators=[DataRequired()])
     ingredients = CKEditorField("Recipe Ingredients", validators=[DataRequired()])
     instructions = CKEditorField("Recipe Instructions", validators=[DataRequired()])
+
+    # Dropdown Fields for recipe additional details
+    dietary_choice = SelectField(
+        "Dietary Choice",
+        choices=[(choice.name, choice.value.replace("_", " ").title()) for choice in DietaryChoice],
+        validators=[DataRequired()],
+    )
+
+    # Time spent on cooking with the descriptive range
+    time_spent = SelectField(
+        "Time Spent",
+        choices=[(choice.name, choice.value) for choice in TimeSpent],
+        validators=[DataRequired()],
+    )
+
+    # Meal cost field with the descriptive cost range
+    meal_cost = SelectField(
+        "Meal Cost",
+        choices=[(choice.name, choice.value) for choice in MealCost],
+        validators=[DataRequired()],
+    )
+
+    # Meal time
+    meal_time = SelectField(
+        "Meal Time",
+        choices=[(choice.name, choice.value.replace("_", " ").title()) for choice in MealTime],
+        validators=[DataRequired()],
+    )
+
 
     submit = SubmitField("Submit Post")
 

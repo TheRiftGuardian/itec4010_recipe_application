@@ -108,8 +108,11 @@ def logout():
 def get_all_posts():
     result = db.session.execute(db.select(RecipePost))
     posts = result.scalars().all()
+    print(posts)
 
     for post in posts:
+        print(post)
+        print(vars(post))
         post.avg_rating = post.average_rating
 
     return render_template("index.html", all_posts=posts, current_user=current_user)
@@ -157,6 +160,12 @@ def add_new_post():
             # body=form.body.data,
             ingredients = form.ingredients.data,
             instructions = form.instructions.data,
+
+            dietary_choice=form.dietary_choice.data,
+            time_spent=form.time_spent.data,
+            meal_cost=form.meal_cost.data,
+            meal_time=form.meal_time.data,
+
 
             img_url=form.img_url.data,
             author=current_user,

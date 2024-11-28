@@ -1,10 +1,13 @@
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
-from sqlalchemy import Integer, String, Text, ForeignKey
+from sqlalchemy import Integer, String, Text, ForeignKey, Enum as SQLAlchemyEnum
 from flask_login import UserMixin
+
+from Recipe_Enum import DietaryChoice, TimeSpent, MealTime, MealCost
 
 # CREATE DATABASE
 class Base(DeclarativeBase):
     pass
+
 
 # CONFIGURE TABLES
 class RecipePost(Base):
@@ -15,13 +18,32 @@ class RecipePost(Base):
     author_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
     # Create reference to the User object. The "posts" refers to the posts property in the User class.
     author = relationship("User", back_populates="recipes")
-    title: Mapped[str] = mapped_column(String(250), unique=True, nullable=False)
+    title: Mapped[str] = mapped_column(String(250), unique=False, nullable=False)
     subtitle: Mapped[str] = mapped_column(String(250), nullable=False)
     date: Mapped[str] = mapped_column(String(250), nullable=False)
 
     #body: Mapped[str] = mapped_column(Text, nullable=False)
     ingredients: Mapped[str] = mapped_column(Text, nullable=False)
     instructions: Mapped[str] = mapped_column(Text, nullable=False)
+
+    # Dietary Choice
+    # Low Carb, High Protein, Plant-Based, Dairy-free, Everything
+    dietary_choice: Mapped[DietaryChoice] = mapped_column(SQLAlchemyEnum(DietaryChoice), nullable=False)
+
+    # Time-spent cooking
+    # Quick Bites (0–15 minutes), Simple Meals (15–30 minutes), . Balanced Dinners (30–45 minutes),
+    # Meal Prep Sessions (45 minutes–1 hour), Special Occasion Meals (1 hour +)
+    time_spent: Mapped[TimeSpent] = mapped_column(SQLAlchemyEnum(TimeSpent), nullable=False)
+
+    # Estimated Meal cost
+    # Super Budget-Friendly ($0–$5 per serving), Affordable Eats ($5–$10 per serving), Moderate Cost ($10–$15 per serving),
+    # Splurge Meals ($15+ per serving)
+    meal_cost: Mapped[MealCost] = mapped_column(SQLAlchemyEnum(MealCost), nullable=False)
+
+    # Mealtime
+    # Breakfast, Lunch, Dinner, Snack
+
+    meal_time: Mapped[MealTime] = mapped_column(SQLAlchemyEnum(MealTime), nullable=False)
 
     img_url: Mapped[str] = mapped_column(String(250), nullable=False)
     # Parent relationship to the comments
