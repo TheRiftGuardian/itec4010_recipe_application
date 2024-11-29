@@ -1,39 +1,37 @@
 from flask import Blueprint
 from datetime import date
-from flask import Flask, abort, render_template, redirect, url_for, flash
-from flask_login import login_user, LoginManager, current_user, logout_user
-from flask_sqlalchemy import SQLAlchemy
+from flask import abort, render_template, redirect, url_for, flash
+from flask_login import login_user, current_user, logout_user
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
-
 from sqlalchemy import select, and_
+
 # Imported forms from the forms.py
 from forms import CreateRecipeForm, RegisterForm, LoginForm, CommentForm, RecipeFilterForm
-# Imported models from the models.py
+
+# Imported models and recipe enumerators from the models.py
 from models import RecipePost, User, Comment, DietaryChoice, TimeSpent, MealTime, MealCost
+
+# Imported db from the db.py
 from db import db
 
-
-
+# Flask Blueprint for the main.py to utilize routes
 route_controller = Blueprint('route_controller', __name__, template_folder="templates")
 
 
-
-# Create a route decorator for admin and authors
+# A route decorator for admin and authors
 def admin_only(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if f.__name__ == 'delete_post':
 
             post_id = kwargs.get('post_id')
-            print(post_id)
             requested_post = db.get_or_404(RecipePost, post_id)
             if current_user.id != 1 and current_user.id != requested_post:
                 return abort(403)
         # Otherwise continue with the route function
         elif f.__name__ == 'add_new_post':
             if not current_user.is_authenticated:
-                print("Bad")
                 return abort(403)
         # Any other admin related route will abort if id is not 1.
         elif current_user != 1:
@@ -82,8 +80,8 @@ def login():
     if form.validate_on_submit():
         password = form.password.data
         result = db.session.execute(db.select(User).where(User.email == form.email.data))
-        # Note, email in db is unique so will only have one result.
         user = result.scalar()
+
         # Email doesn't exist
         if not user:
             flash("That email does not exist, please try again.")
@@ -105,11 +103,11 @@ def logout():
     return redirect(url_for('route_controller.get_all_posts'))
 
 
+# Function to filter recipes based on form input
 def filter_recipes_using_execute(db, dietary_choice=None, time_spent=None, meal_cost=None, meal_time=None):
-    # Start with the base select query
     query = select(RecipePost)
 
-    # Collect filter conditions
+    # Collect filter conditions list
     filters = []
 
     if dietary_choice:
@@ -134,8 +132,6 @@ def filter_recipes_using_execute(db, dietary_choice=None, time_spent=None, meal_
     return result
 
 
-
-
 @route_controller.route('/', methods=['GET', 'POST'])
 def get_all_posts():
     form = RecipeFilterForm()
@@ -153,7 +149,7 @@ def get_all_posts():
         meal_cost = MealCost(form.meal_cost.data) if form.meal_cost.data != '' else None
         meal_time = MealTime(form.meal_time.data) if form.meal_time.data != '' else None
 
-    # Use the filter_recipes_using_execute function to filter posts based on form selections
+    # Use the filter recipe function to filter recipes based on form selections
     posts = filter_recipes_using_execute(
         db,
         dietary_choice=dietary_choice,
@@ -162,19 +158,19 @@ def get_all_posts():
         meal_time=meal_time
     )
 
-    # If needed, calculate average ratings for the posts
+    # Calculate average ratings for the posts
     for post in posts:
         post.avg_rating = post.average_rating
 
     return render_template("index.html", all_posts=posts, current_user=current_user, form=form)
 
 
-# Add a POST method to be able to post comments
 @route_controller.route("/post/<int:post_id>", methods=["GET", "POST"])
 def show_post(post_id):
     requested_post = db.get_or_404(RecipePost, post_id)
-    # Add the CommentForm to the route
+
     comment_form = CommentForm()
+
     # Only allow logged-in users to comment on posts
     if comment_form.validate_on_submit():
         if not current_user.is_authenticated:
@@ -183,7 +179,7 @@ def show_post(post_id):
 
         new_comment = Comment(
             text=comment_form.comment_text.data,
-            star_rating = comment_form.star_rating.data,
+            star_rating=comment_form.star_rating.data,
             comment_author=current_user,
             parent_post=requested_post,
             date=date.today().strftime("%B %d, %Y")
@@ -198,7 +194,7 @@ def show_post(post_id):
     return render_template("post.html", post=requested_post, current_user=current_user, form=comment_form)
 
 
-# Use a decorator so only an admin user can create new posts
+# Use a decorator so only admin and logged in users can add new posts.
 @route_controller.route("/new-post", methods=["GET", "POST"])
 @admin_only
 def add_new_post():
@@ -208,15 +204,13 @@ def add_new_post():
             title=form.title.data,
             subtitle=form.subtitle.data,
 
-            # body=form.body.data,
-            ingredients = form.ingredients.data,
-            instructions = form.instructions.data,
+            ingredients=form.ingredients.data,
+            instructions=form.instructions.data,
 
             dietary_choice=form.dietary_choice.data,
             time_spent=form.time_spent.data,
             meal_cost=form.meal_cost.data,
             meal_time=form.meal_time.data,
-
 
             img_url=form.img_url.data,
             author=current_user,
@@ -228,7 +222,7 @@ def add_new_post():
     return render_template("make-post.html", form=form, current_user=current_user)
 
 
-# Use a decorator so only an admin user can edit a post
+# Only an admin user or the author can edit a recipe post
 @route_controller.route("/edit-post/<int:post_id>", methods=["GET", "POST"])
 def edit_post(post_id):
     post = db.get_or_404(RecipePost, post_id)
@@ -238,9 +232,8 @@ def edit_post(post_id):
         img_url=post.img_url,
         author=post.author,
 
-        # body=post.body,
-        ingredients = post.ingredients,
-        instructions = post.instructions
+        ingredients=post.ingredients,
+        instructions=post.instructions
     )
     if edit_form.validate_on_submit():
         post.title = edit_form.title.data
@@ -248,7 +241,6 @@ def edit_post(post_id):
         post.img_url = edit_form.img_url.data
         post.author = current_user
 
-        #post.body = edit_form.body.data
         post.ingredients = edit_form.ingredients.data
         post.instructions = edit_form.instructions.data
 
@@ -257,7 +249,7 @@ def edit_post(post_id):
     return render_template("make-post.html", form=edit_form, is_edit=True, current_user=current_user)
 
 
-# Use a decorator so only an admin user can delete a post
+# Only an admin user or the author can delete a recipe post
 @route_controller.route("/delete/<int:post_id>")
 @admin_only
 def delete_post(post_id):
@@ -267,12 +259,7 @@ def delete_post(post_id):
     return redirect(url_for('route_controller.get_all_posts'))
 
 
+# Simple about route that shows group members of assignment
 @route_controller.route("/about")
 def about():
     return render_template("about.html", current_user=current_user)
-
-
-@route_controller.route("/contact")
-def contact():
-    return render_template("contact.html", current_user=current_user)
-

@@ -2,6 +2,7 @@ from datetime import date
 from werkzeug.security import generate_password_hash
 from models import Base, RecipePost, User, Comment, DietaryChoice, TimeSpent, MealCost, MealTime
 
+
 def generate_example_data(db):
     # Check if user with id=1 exists, if not, create it
     user = db.session.get(User, 1)
@@ -150,11 +151,321 @@ def generate_example_data(db):
                 time_spent=TimeSpent.QUICK,
                 meal_cost=MealCost.SUPER_BUDGET,
                 meal_time=MealTime.LUNCH
+            ),
+            RecipePost(
+                author_id=1,
+                title="Quinoa Salad with Lemon Dressing",
+                subtitle="A light and refreshing plant-based salad",
+                date=date.today().strftime("%B %d, %Y"),
+                ingredients="Quinoa, cucumbers, tomatoes, red onion, parsley, lemon, olive oil, salt.",
+                instructions="1. Cook quinoa and let it cool. 2. Chop veggies. 3. Mix all with dressing.",
+                img_url="https://www.silverspringfoods.com/assets/images/2020/06/large/177-quinoa-salad-with-lemon-dijon-vinaigrette.webp",
+                dietary_choice=DietaryChoice.PLANT_BASED,
+                time_spent=TimeSpent.SIMPLE,
+                meal_cost=MealCost.AFFORDABLE,
+                meal_time=MealTime.LUNCH
+            ),
+            RecipePost(
+                author_id=1,
+                title="Grilled Chicken Caesar Salad",
+                subtitle="A protein-packed classic salad",
+                date=date.today().strftime("%B %d, %Y"),
+                ingredients="Chicken breast, Romaine lettuce, croutons, Parmesan cheese, Caesar dressing.",
+                instructions="1. Grill chicken. 2. Chop lettuce and mix with dressing. 3. Top with chicken.",
+                img_url="https://www.fromvalerieskitchen.com/wordpress/wp-content/uploads/2023/08/Grilled-Chicken-Caesar-Salad-11.jpg",
+                dietary_choice=DietaryChoice.HIGH_PROTEIN,
+                time_spent=TimeSpent.SIMPLE,
+                meal_cost=MealCost.MODERATE,
+                meal_time=MealTime.LUNCH
+            ),
+            RecipePost(
+                author_id=1,
+                title="Vegan Buddha Bowl",
+                subtitle="A nutritious and colorful vegan meal",
+                date=date.today().strftime("%B %d, %Y"),
+                ingredients="Brown rice, sweet potatoes, chickpeas, spinach, avocado, tahini dressing.",
+                instructions="1. Roast sweet potatoes. 2. Cook rice. 3. Assemble with toppings and dressing.",
+                img_url="https://simplyceecee.co/wp-content/uploads/2018/07/veganbuddhabowl-2.jpg",
+                dietary_choice=DietaryChoice.PLANT_BASED,
+                time_spent=TimeSpent.BALANCED,
+                meal_cost=MealCost.AFFORDABLE,
+                meal_time=MealTime.DINNER
+            ),
+            RecipePost(
+                author_id=1,
+                title="Shrimp Stir-Fry",
+                subtitle="A quick and healthy seafood dinner",
+                date=date.today().strftime("%B %d, %Y"),
+                ingredients="Shrimp, broccoli, carrots, bell peppers, soy sauce, garlic, ginger, sesame oil.",
+                instructions="1. Sauté veggies. 2. Add shrimp and stir-fry with sauce. 3. Serve over rice.",
+                img_url="https://images.themodernproper.com/billowy-turkey/production/posts/Garlic-Shrimp-Stir-Fry-14.jpg?w=960&h=960&q=82&fm=jpg&fit=crop&dm=1599766557&s=010101ec061e6afa587162f05ca8e352",
+                dietary_choice=DietaryChoice.HIGH_PROTEIN,
+                time_spent=TimeSpent.QUICK,
+                meal_cost=MealCost.MODERATE,
+                meal_time=MealTime.DINNER
+            ),
+            RecipePost(
+                author_id=1,
+                title="Classic Omelette",
+                subtitle="A quick and versatile breakfast option",
+                date=date.today().strftime("%B %d, %Y"),
+                ingredients="Eggs, milk, cheese, ham, bell peppers, salt, pepper.",
+                instructions="1. Whisk eggs with milk. 2. Cook in a skillet with fillings. 3. Fold and serve.",
+                img_url="https://www.seriouseats.com/thmb/FWfGvovlGhKamgLyj-Jf1Tjh0IM=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__recipes__images__2016__04__20160323-french-omelet-vicky-wasik--29-4443fd8d1f5b4e359f31e384d901cefb.jpg",
+                dietary_choice=DietaryChoice.EVERYTHING,
+                time_spent=TimeSpent.QUICK,
+                meal_cost=MealCost.SUPER_BUDGET,
+                meal_time=MealTime.BREAKFAST
+            ),
+            RecipePost(
+                author_id=1,
+                title="Stuffed Bell Peppers",
+                subtitle="A hearty and colorful main dish",
+                date=date.today().strftime("%B %d, %Y"),
+                ingredients="Bell peppers, ground turkey, rice, tomatoes, cheese, onion, spices.",
+                instructions="1. Hollow out peppers. 2. Prepare filling with meat and rice. 3. Bake with cheese.",
+                img_url="https://www.dinneratthezoo.com/wp-content/uploads/2019/06/stuffed-bell-peppers-4.jpg",
+                dietary_choice=DietaryChoice.LOW_CARB,
+                time_spent=TimeSpent.MEAL_PREP,
+                meal_cost=MealCost.MODERATE,
+                meal_time=MealTime.DINNER
+            ),
+            RecipePost(
+                author_id=1,
+                title="Avocado Toast",
+                subtitle="A trendy and nutritious breakfast option",
+                date=date.today().strftime("%B %d, %Y"),
+                ingredients="Whole-grain bread, avocado, lemon juice, chili flakes, salt.",
+                instructions="1. Toast bread. 2. Mash avocado with lemon juice. 3. Spread on toast and season.",
+                img_url="https://www.eatingbirdfood.com/wp-content/uploads/2023/12/avocado-toast-hero-cropped-500x500.jpg",
+                dietary_choice=DietaryChoice.PLANT_BASED,
+                time_spent=TimeSpent.QUICK,
+                meal_cost=MealCost.SUPER_BUDGET,
+                meal_time=MealTime.BREAKFAST
+            ),
+            RecipePost(
+                author_id=1,
+                title="Beef and Broccoli",
+                subtitle="A simple and flavorful stir-fry",
+                date=date.today().strftime("%B %d, %Y"),
+                ingredients="Beef strips, broccoli, soy sauce, garlic, ginger, cornstarch, rice.",
+                instructions="1. Cook beef. 2. Stir-fry broccoli. 3. Combine with sauce and serve over rice.",
+                img_url="https://www.justataste.com/wp-content/uploads/2018/04/beef-broccoli-sauce-1.jpg",
+                dietary_choice=DietaryChoice.HIGH_PROTEIN,
+                time_spent=TimeSpent.BALANCED,
+                meal_cost=MealCost.MODERATE,
+                meal_time=MealTime.DINNER
+            ),
+            RecipePost(
+                author_id=1,
+                title="Caprese Salad",
+                subtitle="A simple and fresh Italian appetizer",
+                date=date.today().strftime("%B %d, %Y"),
+                ingredients="Tomatoes, mozzarella, basil, balsamic glaze, olive oil, salt.",
+                instructions="1. Slice tomatoes and mozzarella. 2. Layer with basil. 3. Drizzle with oil and balsamic.",
+                img_url="https://downshiftology.com/wp-content/uploads/2019/07/How-to-Make-Caprese-Salad-1.jpg",
+                dietary_choice=DietaryChoice.EVERYTHING,
+                time_spent=TimeSpent.QUICK,
+                meal_cost=MealCost.SUPER_BUDGET,
+                meal_time=MealTime.SNACK
+            ),
+            RecipePost(
+                author_id=1,
+                title="Vegetable Soup",
+                subtitle="A comforting and nutritious soup",
+                date=date.today().strftime("%B %d, %Y"),
+                ingredients="Carrots, celery, onions, tomatoes, broth, garlic, thyme, bay leaf.",
+                instructions="1. Sauté vegetables. 2. Add broth and seasonings. 3. Simmer until tender.",
+                img_url="https://www.allrecipes.com/thmb/wYELcGueAb7YS20dQ95t22T1CDs=/0x512/filters:no_upscale():max_bytes(150000):strip_icc()/13338-quick-and-easy-vegetable-soup-DDMFS-4x3-402702f59e7a41519515cecccaba1b80.jpg",
+                dietary_choice=DietaryChoice.PLANT_BASED,
+                time_spent=TimeSpent.BALANCED,
+                meal_cost=MealCost.SUPER_BUDGET,
+                meal_time=MealTime.LUNCH
+            ),
+            RecipePost(
+                author_id=1,
+                title="BBQ Pulled Pork Sandwiches",
+                subtitle="Tender pulled pork on a soft bun",
+                date=date.today().strftime("%B %d, %Y"),
+                ingredients="Pork shoulder, BBQ sauce, buns, coleslaw, pickles.",
+                instructions="1. Slow cook pork with BBQ sauce. 2. Shred and serve on buns with coleslaw.",
+                img_url="https://saltpepperskillet.com/wp-content/uploads/pulled-pork-sandwiches-on-butcher-paper-horizontal.jpg",
+                dietary_choice=DietaryChoice.EVERYTHING,
+                time_spent=TimeSpent.SPECIAL_OCCASION,
+                meal_cost=MealCost.MODERATE,
+                meal_time=MealTime.DINNER
+            ),
+            RecipePost(
+                author_id=1,
+                title="Tofu Stir-Fry",
+                subtitle="A plant-based protein-packed stir-fry",
+                date=date.today().strftime("%B %d, %Y"),
+                ingredients="Tofu, broccoli, carrots, soy sauce, ginger, garlic, sesame oil.",
+                instructions="1. Pan-fry tofu. 2. Stir-fry veggies. 3. Combine with sauce and serve.",
+                img_url="https://rainbowplantlife.com/wp-content/uploads/2023/01/tofu-stir-fry-cover-photo-1-of-1.jpg",
+                dietary_choice=DietaryChoice.PLANT_BASED,
+                time_spent=TimeSpent.BALANCED,
+                meal_cost=MealCost.AFFORDABLE,
+                meal_time=MealTime.DINNER
+            ),
+            RecipePost(
+                author_id=1,
+                title="Egg Salad Sandwiches",
+                subtitle="A creamy and quick lunch option",
+                date=date.today().strftime("%B %d, %Y"),
+                ingredients="Eggs, mayonnaise, mustard, salt, pepper, bread.",
+                instructions="1. Boil eggs and chop. 2. Mix with mayo and mustard. 3. Assemble sandwiches.",
+                img_url="https://www.spendwithpennies.com/wp-content/uploads/2023/03/1200-Best-Egg-Salad-Recipe-SpendWithPennies.jpg",
+                dietary_choice=DietaryChoice.EVERYTHING,
+                time_spent=TimeSpent.QUICK,
+                meal_cost=MealCost.SUPER_BUDGET,
+                meal_time=MealTime.LUNCH
+            ),
+            RecipePost(
+                author_id=1,
+                title="Lentil Curry",
+                subtitle="A hearty and spicy vegan dish",
+                date=date.today().strftime("%B %d, %Y"),
+                ingredients="Lentils, coconut milk, tomatoes, curry spices, garlic, ginger.",
+                instructions="1. Cook lentils. 2. Prepare curry sauce. 3. Combine and simmer.",
+                img_url="https://www.skinnytaste.com/wp-content/uploads/2023/05/Lentil-Curry-7.jpg",
+                dietary_choice=DietaryChoice.PLANT_BASED,
+                time_spent=TimeSpent.BALANCED,
+                meal_cost=MealCost.SUPER_BUDGET,
+                meal_time=MealTime.DINNER
+            ),
+            RecipePost(
+                author_id=1,
+                title="Baked Ziti",
+                subtitle="Cheesy and comforting Italian-American pasta",
+                date=date.today().strftime("%B %d, %Y"),
+                ingredients="Ziti pasta, marinara sauce, ricotta cheese, mozzarella, Parmesan.",
+                instructions="1. Cook pasta. 2. Layer with sauce and cheeses. 3. Bake until bubbly.",
+                img_url="https://www.simplyrecipes.com/thmb/uGmTDCSeJB4Ac2-M4h62-FCgmu0=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Simply-Recipes-Baked-Ziti-LEAD-db0d2e1b6e554b4aa6ff8a2f23f2f903.jpg",
+                dietary_choice=DietaryChoice.EVERYTHING,
+                time_spent=TimeSpent.SPECIAL_OCCASION,
+                meal_cost=MealCost.MODERATE,
+                meal_time=MealTime.DINNER
+            ),
+            RecipePost(
+                author_id=1,
+                title="Fruit Parfait",
+                subtitle="A light and healthy breakfast or snack",
+                date=date.today().strftime("%B %d, %Y"),
+                ingredients="Yogurt, granola, mixed berries, honey.",
+                instructions="1. Layer yogurt, berries, and granola in a cup. 2. Drizzle with honey.",
+                img_url="https://www.simplysissom.com/wp-content/uploads/2017/01/horizontalparfaityogurt-copy.jpg",
+                dietary_choice=DietaryChoice.EVERYTHING,
+                time_spent=TimeSpent.QUICK,
+                meal_cost=MealCost.SUPER_BUDGET,
+                meal_time=MealTime.BREAKFAST
+            ),
+            RecipePost(
+                author_id=1,
+                title="Chickpea Salad Wraps",
+                subtitle="A quick and healthy plant-based wrap",
+                date=date.today().strftime("%B %d, %Y"),
+                ingredients="Chickpeas, avocado, lemon, garlic, tortillas, spinach.",
+                instructions="1. Mash chickpeas with avocado and season. 2. Spread on tortillas with spinach. 3. Roll and serve.",
+                img_url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZcMaE8yYiotmkZpdPi7ZkXsqB1z3TPCwQHQ&s",
+                dietary_choice=DietaryChoice.PLANT_BASED,
+                time_spent=TimeSpent.SIMPLE,
+                meal_cost=MealCost.SUPER_BUDGET,
+                meal_time=MealTime.LUNCH
+            ),
+            RecipePost(
+                author_id=1,
+                title="Roasted Cauliflower Tacos",
+                subtitle="Flavorful and plant-based tacos",
+                date=date.today().strftime("%B %d, %Y"),
+                ingredients="Cauliflower, taco seasoning, tortillas, salsa, avocado, lime.",
+                instructions="1. Roast cauliflower with seasoning. 2. Assemble tacos with toppings. 3. Serve warm.",
+                img_url="https://cdn.loveandlemons.com/wp-content/uploads/2021/04/cauliflower-tacos.jpg",
+                dietary_choice=DietaryChoice.PLANT_BASED,
+                time_spent=TimeSpent.BALANCED,
+                meal_cost=MealCost.AFFORDABLE,
+                meal_time=MealTime.DINNER
+            ),
+            RecipePost(
+                author_id=1,
+                title="Turkey Meatballs",
+                subtitle="Lean and flavorful meatballs for any occasion",
+                date=date.today().strftime("%B %d, %Y"),
+                ingredients="Ground turkey, breadcrumbs, eggs, Parmesan, garlic, marinara sauce.",
+                instructions="1. Mix ingredients and form meatballs. 2. Bake or fry. 3. Serve with sauce.",
+                img_url="https://www.culinaryhill.com/wp-content/uploads/2018/06/Turkey-Meatballs-Culinary-Hill-square-500x375.jpg",
+                dietary_choice=DietaryChoice.LOW_CARB,
+                time_spent=TimeSpent.MEAL_PREP,
+                meal_cost=MealCost.MODERATE,
+                meal_time=MealTime.DINNER
+            ),
+            RecipePost(
+                author_id=1,
+                title="Blueberry Muffins",
+                subtitle="Soft and sweet breakfast muffins",
+                date=date.today().strftime("%B %d, %Y"),
+                ingredients="Blueberries, flour, sugar, butter, eggs, baking powder.",
+                instructions="1. Mix dry and wet ingredients separately. 2. Combine and fold in blueberries. 3. Bake in muffin tin.",
+                img_url="https://www.kingarthurbaking.com/sites/default/files/styles/featured_image/public/2022-12/KABC_Quick-Breads_Blueberry-Muffin_08304.jpg?itok=EM7XxPfL",
+                dietary_choice=DietaryChoice.EVERYTHING,
+                time_spent=TimeSpent.SIMPLE,
+                meal_cost=MealCost.SUPER_BUDGET,
+                meal_time=MealTime.BREAKFAST
+            ),
+            RecipePost(
+                author_id=1,
+                title="Falafel",
+                subtitle="Crispy and flavorful chickpea patties",
+                date=date.today().strftime("%B %d, %Y"),
+                ingredients="Chickpeas, parsley, onion, garlic, flour, spices, oil for frying.",
+                instructions="1. Blend chickpeas and seasonings. 2. Form into patties and fry. 3. Serve with pita and tahini.",
+                img_url="https://toriavey.com/images/2011/01/TOA109_18-1-500x500.jpeg",
+                dietary_choice=DietaryChoice.PLANT_BASED,
+                time_spent=TimeSpent.MEAL_PREP,
+                meal_cost=MealCost.AFFORDABLE,
+                meal_time=MealTime.LUNCH
+            ),
+            RecipePost(
+                author_id=1,
+                title="Mango Smoothie",
+                subtitle="A refreshing tropical drink",
+                date=date.today().strftime("%B %d, %Y"),
+                ingredients="Mango, banana, yogurt, orange juice, ice cubes.",
+                instructions="1. Combine all ingredients in a blender. 2. Blend until smooth. 3. Serve chilled.",
+                img_url="https://cdn.loveandlemons.com/wp-content/uploads/2023/05/mango-smoothie.jpg",
+                dietary_choice=DietaryChoice.EVERYTHING,
+                time_spent=TimeSpent.QUICK,
+                meal_cost=MealCost.SUPER_BUDGET,
+                meal_time=MealTime.SNACK
+            ),
+            RecipePost(
+                author_id=1,
+                title="Baked Sweet Potato Fries",
+                subtitle="Crispy and healthy alternative to fries",
+                date=date.today().strftime("%B %d, %Y"),
+                ingredients="Sweet potatoes, olive oil, paprika, garlic powder, salt.",
+                instructions="1. Slice sweet potatoes. 2. Toss with oil and spices. 3. Bake until crispy.",
+                img_url="https://www.cookingclassy.com/wp-content/uploads/2021/10/baked-sweet-potato-fries-12.jpg",
+                dietary_choice=DietaryChoice.PLANT_BASED,
+                time_spent=TimeSpent.SIMPLE,
+                meal_cost=MealCost.SUPER_BUDGET,
+                meal_time=MealTime.SNACK
+            ),
+            RecipePost(
+                author_id=1,
+                title="Chocolate Chip Cookies",
+                subtitle="Classic soft and chewy cookies",
+                date=date.today().strftime("%B %d, %Y"),
+                ingredients="Butter, sugar, eggs, flour, chocolate chips, baking soda.",
+                instructions="1. Cream butter and sugar. 2. Mix in dry ingredients and chocolate chips. 3. Bake on cookie sheet.",
+                img_url="https://static01.nyt.com/images/2022/02/12/dining/JT-Chocolate-Chip-Cookies/JT-Chocolate-Chip-Cookies-googleFourByThree-v2.jpg",
+                dietary_choice=DietaryChoice.EVERYTHING,
+                time_spent=TimeSpent.SIMPLE,
+                meal_cost=MealCost.AFFORDABLE,
+                meal_time=MealTime.SNACK
             )
         ]
 
         # Add all example posts to the session
         db.session.add_all(example_posts)
         db.session.commit()
-        print("Example data inserted into RecipePost table.")
-

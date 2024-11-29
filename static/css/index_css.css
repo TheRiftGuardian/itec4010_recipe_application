@@ -1,0 +1,69 @@
+/* Base styles for all tags */
+.tag {
+  display: inline-block;
+  padding: 5px 10px;
+  margin: 5px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* Specific styles for different dietary choice categories */
+.tag-dietary-choice.low_carb {
+  background-color: #FFEB3B; /* Yellow for low-carb */
+  color: #fff;
+}
+
+.tag-dietary-choice.high_protein {
+  background-color: #F44336; /* Red for high-protein */
+  color: #fff;
+}
+
+.tag-dietary-choice.plant_based {
+  background-color: #4CAF50; /* Green for plant-based */
+  color: #fff;
+}
+
+.tag-dietary-choice.dairy_free {
+  background-color: #9C27B0; /* Purple for dairy-free */
+  color: #fff;
+}
+
+.tag-dietary-choice.everything {
+  background-color: #B0BEC5; /* Light Grey for everything */
+  color: #fff;
+}
+
+/* Specific styles for different meal time categories */
+.tag-meal-time.breakfast {
+  background-color: #FF9800; /* Orange for breakfast */
+  color: #fff;
+}
+
+.tag-meal-time.lunch {
+  background-color: #4CAF50; /* Green for lunch */
+  color: #fff;
+}
+
+.tag-meal-time.dinner {
+  background-color: #8B4513; /* Brown for dinner */
+  color: #fff;
+}
+
+.tag-meal-time.snacks {
+  background-color: #F44336; /* Red for snacks */
+  color: #fff;
+}
+
+/* Styles for other tags (neutral, no color) */
+.other-tags-container .tag {
+  background-color: #f1f1f1;
+  color: #333; /* Dark text for readability */
+}
+
+/* Optional: Add hover effects */
+.tag:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+

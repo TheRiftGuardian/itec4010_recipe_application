@@ -1,23 +1,27 @@
 {% from "bootstrap5/form.html" import render_form %}
 {% include "header.html" %}
+<link
+            href="{{ url_for('static', filename='css/post_css.css') }}"
+            rel="stylesheet"
+    />
 
 <!-- Page Header-->
 <header class="masthead" style="background-image: url('{{ post.img_url }}')">
-  <div class="container position-relative px-4 px-lg-5">
-    <div class="row gx-4 gx-lg-5 justify-content-center">
-      <div class="col-md-10 col-lg-8 col-xl-7">
-        <div class="post-heading">
-          <h1>{{ post.title }}</h1>
-          <h2 class="subheading">{{ post.subtitle }}</h2>
-          <span class="meta">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="post-heading">
+                    <h1>{{ post.title }}</h1>
+                    <h2 class="subheading">{{ post.subtitle }}</h2>
+                    <span class="meta">
             Posted by
             <a href="#">{{ post.author.name }}</a>
             on {{ post.date }}
           </span>
 
-          <!-- Rating Section -->
-          <br>
-          <span>
+                    <!-- Rating Section -->
+                    <br>
+                    <span>
             {% set avg_rating, total_reviews = post.average_rating if post.average_rating else (None, 0) %}
             {% if avg_rating %}
               <span>
@@ -40,122 +44,80 @@
           </span>
 
                     <!-- Dietary Choice and Meal Time Tags -->
-          <div class="tags-container mt-3">
+                    <div class="tags-container mt-3">
             <span class="tag tag-dietary-choice
               {% if post.dietary_choice == 'low_carb' %}low_carb{% elif post.dietary_choice == 'high_protein' %}high_protein{% elif post.dietary_choice == 'plant_based' %}plant_based{% elif post.dietary_choice == 'dairy_free' %}dairy_free{% else %}everything{% endif %}">
               {{ post.dietary_choice.value.replace('_', ' ').title() }}
             </span>
-            <span class="tag tag-meal-time
+                        <span class="tag tag-meal-time
               {% if post.meal_time == 'breakfast' %}breakfast{% elif post.meal_time == 'lunch' %}lunch{% elif post.meal_time == 'dinner' %}dinner{% else %}snacks{% endif %}">
               {{ post.meal_time.value.replace('_', ' ').title() }}
             </span>
-          </div>
+                    </div>
 
-          <!-- Time Spent and Meal Cost -->
-          <div class="other-tags-container mt-2">
-            <span class="tag">{{ post.time_spent.value.replace('_', ' ').title() }}</span>
-            <span class="tag">{{ post.meal_cost.value.replace('_', ' ').title() }}</span>
-          </div>
+                    <!-- Time Spent and Meal Cost -->
+                    <div class="other-tags-container mt-2">
+                        <span class="tag">{{ post.time_spent.value.replace('_', ' ').title() }}</span>
+                        <span class="tag">{{ post.meal_cost.value.replace('_', ' ').title() }}</span>
+                    </div>
 
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </header>
 
 <!-- Post Content -->
 <article>
-  <div class="container px-4 px-lg-5">
-    <div class="row gx-4 gx-lg-5 justify-content-center">
-      <div class="col-md-10 col-lg-8 col-xl-7">
-        <h1>Ingredients</h1>
-        {{ post.ingredients|safe }}
-        <br>
-        <h1>Instructions</h1>
-        {{ post.instructions|safe }}
-
-        <!-- Only show Edit Post button if user id is 1 (admin user) -->
-        {% if current_user.id == 1 or current_user.id == post.author_id %}
-        <div class="d-flex justify-content-end mb-4">
-          <a class="btn btn-primary float-right" href="{{url_for('route_controller.edit_post', post_id=post.id)}}">Edit Post</a>
-        </div>
-        {% endif %}
-
-        <!-- Comments Area -->
-        <!-- Load the CKEditor -->
-        {{ ckeditor.load() }}
-        <!-- Configure it with the name of the form field from CommentForm -->
-        {{ ckeditor.config(name='comment_text') }}
-
-        <!-- Create the wtf quick form from CommentForm -->
-        {{ render_form(form, novalidate=True, button_map={"submit": "primary"}) }}
-        <div class="comment">
-          <ul class="commentList">
-            <!-- Show all comments -->
-            {% for comment in post.comments %}
-            <li>
-              <div class="commenterImage">
-                <img src="{{ comment.comment_author.email | gravatar }}" />
-              </div>
-              <span class="sub-text">{{ comment.comment_author.name }}</span>
-              <br>
-              <div class="commentText">
-                {{ '⭐' * comment.star_rating | int }} {{ comment.date }}
-                {% if comment.text %}
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <h1>Ingredients</h1>
+                {{ post.ingredients|safe }}
                 <br>
-                {{ comment.text | safe }}
+                <h1>Instructions</h1>
+                {{ post.instructions|safe }}
+
+                <!-- Only show Edit Post button if user id is 1 (admin user) -->
+                {% if current_user.id == 1 or current_user.id == post.author_id %}
+                <div class="d-flex justify-content-end mb-4">
+                    <a class="btn btn-primary float-right"
+                       href="{{url_for('route_controller.edit_post', post_id=post.id)}}">Edit Post</a>
+                </div>
                 {% endif %}
-              </div>
-            </li>
-            {% endfor %}
-          </ul>
+
+                <!-- Comments Area -->
+                <!-- Load the CKEditor -->
+                {{ ckeditor.load() }}
+                <!-- Configure it with the name of the form field from CommentForm -->
+                {{ ckeditor.config(name='comment_text') }}
+
+                <!-- Create the wtf quick form from CommentForm -->
+                {{ render_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+                <div class="comment">
+                    <ul class="commentList">
+                        <!-- Show all comments -->
+                        {% for comment in post.comments %}
+                        <li>
+                            <div class="commenterImage">
+                                <img src="{{ comment.comment_author.email | gravatar }}"/>
+                            </div>
+                            <span class="sub-text">{{ comment.comment_author.name }}</span>
+                            <br>
+                            <div class="commentText">
+                                {{ '⭐' * comment.star_rating | int }} {{ comment.date }}
+                                {% if comment.text %}
+                                <br>
+                                {{ comment.text | safe }}
+                                {% endif %}
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </article>
 
 {% include "footer.html" %}
-
-<style>
- /* General tag styling */
-.tag {
-  display: inline-block;
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-size: 14px;
-  margin-right: 10px;
-  margin-bottom: 10px;
-  color: white; /* Default text color for tags */
-  font-weight: bold;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* Subtle text shadow for contrast */
-}
-
-/* Darkened background for Meal Price and Time Spent Tags */
-.other-tags-container .tag {
-  background-color: rgba(0, 0, 0, 0.6); /* Dark semi-transparent background */
-}
-
-/* Dietary choice tag colors */
-.tag-dietary-choice {
-  background-color: #4caf50; /* Green for plant-based or low-carb, etc. */
-}
-
-/* Meal time tag colors */
-.tag-meal-time {
-  background-color: #ff9800; /* Orange for breakfast, etc. */
-}
-
-/* Meal time and dietary choice text contrast */
-.tag-dietary-choice, .tag-meal-time {
-  color: white; /* Ensure the text inside tags is readable */
-}
-
-/* Adjust time and meal cost to stand out */
-.other-tags-container .tag {
-  background-color: rgba(0, 0, 0, 0.7); /* Darker background for time spent and cost */
-  color: white;
-}
-
-
-</style>
