@@ -110,6 +110,9 @@
                                 <br>
                                 {{ comment.text | safe }}
                                 {% endif %}
+                                 {% if current_user.id == 1 or current_user.id == comment.author_id %}
+                        <a href="{{ url_for('route_controller.delete_comment', comment_id=comment.id) }}">✘ Delete Comment</a>
+                        {% endif %}
                             </div>
                         </li>
                         {% endfor %}

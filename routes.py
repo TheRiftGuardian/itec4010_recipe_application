@@ -24,14 +24,18 @@ def admin_only(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if f.__name__ == 'delete_post':
-
             post_id = kwargs.get('post_id')
             requested_post = db.get_or_404(RecipePost, post_id)
-            if current_user.id != 1 and current_user.id != requested_post:
+            if current_user.id != 1 and current_user.id != requested_post.author_id:
                 return abort(403)
         # Otherwise continue with the route function
         elif f.__name__ == 'add_new_post':
             if not current_user.is_authenticated:
+                return abort(403)
+        elif f.__name__ == 'delete_comment':
+            comment_id = kwargs.get('comment_id')
+            requested_comment = db.get_or_404(Comment, comment_id)
+            if current_user.id != 1 and current_user.id != requested_comment.author_id:
                 return abort(403)
         # Any other admin related route will abort if id is not 1.
         elif current_user != 1:
@@ -257,6 +261,20 @@ def delete_post(post_id):
     db.session.delete(post_to_delete)
     db.session.commit()
     return redirect(url_for('route_controller.get_all_posts'))
+
+
+# Only an admin user or the author can delete a comment
+@route_controller.route("/delete_comment/<int:comment_id>")
+@admin_only
+def delete_comment(comment_id):
+    comment_to_delete = db.get_or_404(Comment, comment_id)
+    print(comment_to_delete)
+    print('comment deleted!')
+    post_id = comment_to_delete.post_id
+    db.session.delete(comment_to_delete)
+    db.session.commit()
+    return redirect(url_for('route_controller.show_post', post_id=post_id))
+
 
 
 # Simple about route that shows group members of assignment
