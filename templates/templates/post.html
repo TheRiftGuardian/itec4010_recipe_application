@@ -1,0 +1,123 @@
+{% from "bootstrap5/form.html" import render_form %}
+{% include "header.html" %}
+<link
+            href="{{ url_for('static', filename='css/post_css.css') }}"
+            rel="stylesheet"
+    />
+
+<!-- Page Header-->
+<header class="masthead" style="background-image: url('{{ post.img_url }}')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="post-heading">
+                    <h1>{{ post.title }}</h1>
+                    <h2 class="subheading">{{ post.subtitle }}</h2>
+                    <span class="meta">
+            Posted by
+            <a href="#">{{ post.author.name }}</a>
+            on {{ post.date }}
+          </span>
+
+                    <!-- Rating Section -->
+                    <br>
+                    <span>
+            {% set avg_rating, total_reviews = post.average_rating if post.average_rating else (None, 0) %}
+            {% if avg_rating %}
+              <span>
+                {% for i in range(5) %}
+                  {% if avg_rating >= i + 1 %}
+                    <i class="fas fa-star"></i> <!-- Full star -->
+                  {% elif avg_rating >= i + 0.5 %}
+                    <i class="fas fa-star-half-alt"></i> <!-- Half star -->
+                  {% else %}
+                    <i class="far fa-star"></i> <!-- Empty star -->
+                  {% endif %}
+                {% endfor %}
+              </span>
+              <span style="font-weight: normal; margin-left: 8px;">
+                ({{ total_reviews }} reviews)
+              </span>
+            {% else %}
+              <span>No reviews yet</span>
+            {% endif %}
+          </span>
+
+                    <!-- Dietary Choice and Meal Time Tags -->
+                    <div class="tags-container mt-3">
+            <span class="tag tag-dietary-choice
+              {% if post.dietary_choice == 'low_carb' %}low_carb{% elif post.dietary_choice == 'high_protein' %}high_protein{% elif post.dietary_choice == 'plant_based' %}plant_based{% elif post.dietary_choice == 'dairy_free' %}dairy_free{% else %}everything{% endif %}">
+              {{ post.dietary_choice.value.replace('_', ' ').title() }}
+            </span>
+                        <span class="tag tag-meal-time
+              {% if post.meal_time == 'breakfast' %}breakfast{% elif post.meal_time == 'lunch' %}lunch{% elif post.meal_time == 'dinner' %}dinner{% else %}snacks{% endif %}">
+              {{ post.meal_time.value.replace('_', ' ').title() }}
+            </span>
+                    </div>
+
+                    <!-- Time Spent and Meal Cost -->
+                    <div class="other-tags-container mt-2">
+                        <span class="tag">{{ post.time_spent.value.replace('_', ' ').title() }}</span>
+                        <span class="tag">{{ post.meal_cost.value.replace('_', ' ').title() }}</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <h1>Ingredients</h1>
+                {{ post.ingredients|safe }}
+                <br>
+                <h1>Instructions</h1>
+                {{ post.instructions|safe }}
+
+                <!-- Only show Edit Post button if user id is 1 (admin user) -->
+                {% if current_user.id == 1 or current_user.id == post.author_id %}
+                <div class="d-flex justify-content-end mb-4">
+                    <a class="btn btn-primary float-right"
+                       href="{{url_for('route_controller.edit_post', post_id=post.id)}}">Edit Post</a>
+                </div>
+                {% endif %}
+
+                <!-- Comments Area -->
+                <!-- Load the CKEditor -->
+                {{ ckeditor.load() }}
+                <!-- Configure it with the name of the form field from CommentForm -->
+                {{ ckeditor.config(name='comment_text') }}
+
+                <!-- Create the wtf quick form from CommentForm -->
+                {{ render_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+                <div class="comment">
+                    <ul class="commentList">
+                        <!-- Show all comments -->
+                        {% for comment in post.comments %}
+                        <li>
+                            <div class="commenterImage">
+                                <img src="{{ comment.comment_author.email | gravatar }}"/>
+                            </div>
+                            <span class="sub-text">{{ comment.comment_author.name }}</span>
+                            <br>
+                            <div class="commentText">
+                                {{ '⭐' * comment.star_rating | int }} {{ comment.date }}
+                                {% if comment.text %}
+                                <br>
+                                {{ comment.text | safe }}
+                                {% endif %}
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
+
+{% include "footer.html" %}
