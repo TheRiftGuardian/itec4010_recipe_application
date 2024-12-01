@@ -23,7 +23,7 @@ route_controller = Blueprint('route_controller', __name__, template_folder="temp
 def admin_only(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if f.__name__ == 'delete_post':
+        if f.__name__ == 'delete_post' or f.__name__ == 'edit_post':
             post_id = kwargs.get('post_id')
             requested_post = db.get_or_404(RecipePost, post_id)
             if current_user.id != 1 and current_user.id != requested_post.author_id:
@@ -228,6 +228,7 @@ def add_new_post():
 
 # Only an admin user or the author can edit a recipe post
 @route_controller.route("/edit-post/<int:post_id>", methods=["GET", "POST"])
+@admin_only
 def edit_post(post_id):
     post = db.get_or_404(RecipePost, post_id)
     edit_form = CreateRecipeForm(
